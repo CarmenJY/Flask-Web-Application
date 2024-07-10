@@ -1,19 +1,16 @@
 from datetime import datetime, timezone
 from typing import Optional
-import sqlalchemy as sa
-import sqlalchemy.orm as so
-from app import db
+import sqlalchemy as sa #Imports the core SQLAlchemy library and aliases it as sa for convenience.
+import sqlalchemy.orm as so #Imports the SQLAlchemy ORM (Object-Relational Mapping) library and aliases it as so for convenience.
+from app import db #Imports the db object, which is an instance of SQLAlchemy from the main application setup.
 
 class User(db.Model):
-    id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
-                                                unique=True)
-    email: so.Mapped[str] = so.mapped_column(sa.String(120), index=True,
-                                             unique=True)
+    id: so.Mapped[int] = so.mapped_column(primary_key = True)
+    username: so.Mapped[str] = so.mapped_column(sa.String(64), index = True, unique = True)
+    email: so.Mapped[str] = so.mapped_column(sa.String(120), index = True, unique = True)
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
-    posts: so.WriteOnlyMapped['Post'] = so.relationship(
-        back_populates='author')
+    posts: so.WriteOnlyMapped['Post'] = so.relationship(back_populates='author')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
